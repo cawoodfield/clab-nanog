@@ -1,0 +1,97 @@
+name: nanog_clab_graphite
+
+mgmt:
+  network: mgmt
+  ipv4_subnet: 172.22.0.0/24
+
+topology:
+  kinds:
+    ceos:
+      image: ceos:latest
+    crpd:
+      image: crpd:latest
+
+  nodes:
+    ceos1:
+      kind: ceos
+      startup-config: /opt/clab/files/ceos1.cfg
+      mgmt_ipv4: 172.22.0.2
+      labels:
+        graph-level: 2
+
+    ceos2:
+      kind: ceos
+      startup-config: /opt/clab/files/ceos2.cfg
+      mgmt_ipv4: 172.22.0.3
+      labels:
+        graph-level: 3
+        graph-icon: switch
+
+    crpd1:
+      kind: crpd
+      startup-config: /opt/clab/files/crpd1.cfg
+      binds:
+        - /opt/clab/files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
+      exec:
+        - cli -c "request system license add /tmp/junos_sfnt.lic"
+      mgmt_ipv4: 172.22.0.4
+      labels:
+        graph-level: 2
+        graph-icon: switch
+
+    crpd2:
+      kind: crpd
+      startup-config: /opt/clab/files/crpd2.cfg
+      binds:
+        - /opt/clab/files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
+      exec:
+        - cli -c "request system license add /tmp/junos_sfnt.lic"
+      mgmt_ipv4: 172.22.0.5
+      labels:
+        graph-level: 3
+
+    centos1:
+      kind: linux
+      image: nanoghackathon/centos-systemd
+      mgmt_ipv4: 172.22.0.6
+      binds:
+        - /opt/clab/files/init_centos1.sh:/tmp/init.sh
+      cmd: "sh /tmp/init.sh"
+      labels:
+        graph-level: 1
+        graph-icon: server
+
+    ubuntu1:
+      kind: linux
+      image: netreplica/ubuntu-host
+      mgmt_ipv4: 172.22.0.7
+      binds:
+        - /opt/clab/files/init_ubuntu1.sh:/tmp/init.sh
+      cmd: "sh /tmp/init.sh"
+      labels:
+        graph-level: 4
+        graph-icon: server
+
+    graphite:
+      kind: linux
+      image: netreplica/graphite:nanog86
+      mgmt_ipv4: 172.22.0.100
+      env:
+        CLAB_SSH_CONNECTION: ${SSH_CONNECTION}
+      binds:
+        - __clabDir__/topology-data.json:/htdocs/lab/default/topology-data.json:ro
+        - __clabDir__/ansible-inventory.yml:/htdocs/lab/default/ansible-inventory.yml:ro
+      ports:
+        - 8080:80
+      exec:
+        - sh -c 'graphite_motd.sh 8080'
+      labels:
+        graph-hide: yes
+
+  links:
+    - endpoints: ["ceos1:eth2", "crpd1:eth1"]
+    - endpoints: ["crpd1:eth2", "crpd2:eth2"]
+    - endpoints: ["crpd2:eth1", "ceos2:eth2"]
+    - endpoints: ["ceos2:eth1", "ceos1:eth1"]
+    - endpoints: ["crpd1:eth3", "centos1:eth1"]
+    - endpoints: ["ceos2:eth3", "ubuntu1:eth1"]
