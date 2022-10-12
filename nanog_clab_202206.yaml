@@ -1,0 +1,57 @@
+name: nanog_hackathon
+
+mgmt:
+  network: mgmt
+  ipv4_subnet: 172.22.0.0/24
+
+topology:
+  kinds:
+    ceos:
+      image: ceos:latest
+    crpd:
+      image: crpd:latest
+
+  nodes:
+    ceos1:
+      kind: ceos
+      startup-config: /opt/clab/files/ceos1.cfg
+      mgmt_ipv4: 172.22.0.2
+
+    ceos2:
+      kind: ceos
+      startup-config: /opt/clab/files/ceos2.cfg
+      mgmt_ipv4: 172.22.0.3
+
+    crpd1:
+      kind: crpd 
+      startup-config: /opt/clab/files/crpd1.cfg
+      mgmt_ipv4: 172.22.0.4
+
+    crpd2:
+      kind: crpd
+      startup-config: /opt/clab/files/crpd2.cfg
+      mgmt_ipv4: 172.22.0.5
+
+    centos1:
+      kind: linux
+      image: nanoghackathon82/centos
+      mgmt_ipv4: 172.22.0.6
+      binds:
+        - /opt/clab/files/init_centos1.sh:/tmp/init.sh
+      cmd: "sh /tmp/init.sh"
+
+    centos2:
+      kind: linux
+      image: nanoghackathon82/centos
+      mgmt_ipv4: 172.22.0.7
+      binds:
+        - /opt/clab/files/init_centos2.sh:/tmp/init.sh
+      cmd: "sh /tmp/init.sh"
+
+  links:
+    - endpoints: ["ceos1:eth2", "crpd1:eth1"]
+    - endpoints: ["crpd1:eth2", "crpd2:eth2"]
+    - endpoints: ["crpd2:eth1", "ceos2:eth2"]
+    - endpoints: ["ceos2:eth1", "ceos1:eth1"]
+    - endpoints: ["crpd1:eth3", "centos1:eth1"]
+    - endpoints: ["ceos2:eth3", "centos2:eth1"]
