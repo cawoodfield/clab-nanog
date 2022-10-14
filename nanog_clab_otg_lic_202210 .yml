@@ -29,6 +29,10 @@ topology:
     crpd1:
       kind: crpd
       startup-config: /opt/clab/files/crpd1.cfg
+      binds:
+        - /opt/clab/files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
+      exec:
+        - cli -c "request system license add /tmp/junos_sfnt.lic"
       mgmt_ipv4: 172.22.0.4
       labels:
         graph-level: 2
@@ -36,6 +40,10 @@ topology:
     crpd2:
       kind: crpd
       startup-config: /opt/clab/files/crpd2.cfg
+      binds:
+        - /opt/clab/files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
+      exec:
+        - cli -c "request system license add /tmp/junos_sfnt.lic"
       mgmt_ipv4: 172.22.0.5
       labels:
         graph-level: 3
