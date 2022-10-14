@@ -1,5 +1,9 @@
 # NANOG-86 Hackathon Open Traffic Generator Lab
 
+## Topology diagram
+
+[!Diagram](images/n86-otg.png)
+
 ## Deploy a topology
 
 1. Option with Ixia-c replacing `host1` and `host2` as is
