@@ -68,9 +68,7 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
                     --tx otg2 --rx otg1 \
   > otg.yml
   ```
-3. Take a look at the content of `otg.yml` you just created. Use [OTG Specification](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/open-traffic-generator/models/master/artifacts/openapi.yaml&nocors) as a reference.
-
-  Note, although we used `otgen` tool to create a file, this could be done in a variety of different ways. See more [here](https://otg.dev/clients/).
+3. Take a look at the content of `otg.yml` you just created. Use [OTG Specification](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/open-traffic-generator/models/master/artifacts/openapi.yaml&nocors) as a reference. Note, although we used `otgen` tool to create the file, this could be done in a variety of different ways. See more [here](https://otg.dev/clients/).
 
 ## Run OTG testing
 
