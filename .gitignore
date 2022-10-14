@@ -155,3 +155,4 @@ clab-*
 *.lic
 otg.yml
 node-data.json
+otg.json

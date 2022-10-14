@@ -4,6 +4,7 @@
 
 * Linux host or VM with sudo permissions and Docker support
 * `git` - how to install depends on your Linux distro
+* [`yq`](https://github.com/mikefarah/yq/#install)
 * [Docker](https://docs.docker.com/engine/install/)
 * [Containerlab](https://containerlab.dev/install/)
 * [otgen](https://otg.dev/clients/otgen/) version 0.3.0 or later
@@ -113,6 +114,29 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
             --metrics flow | \
   otgen transform --metrics flow |
   otgen display --mode table
+  ```
+
+## Alternative way to run OTG test
+
+1. In the previous steps we used `otgen` tool to apply `otg.yml` configuration to `ixia-c`, but any REST API client can be used for this instead. For example, let's use `curl` as documented [here](https://otg.dev/clients/curl/)
+
+  ```Shell
+  OTG_HOST="https://clab-nanog86_otg-ixiac"
+  
+  cat otg.yml | yq -o=json '.' > otg.json
+
+  curl -k "${OTG_HOST}/config" \
+      -H "Content-Type: application/json" \
+      -d @otg.json
+
+  curl -k "${OTG_HOST}/control/transmit" \
+      -H  "Content-Type: application/json" \
+      -d '{"state": "start"}'
+
+  watch -n 1 "curl -sk \"${OTG_HOST}/results/metrics\" \
+      -X POST \
+      -H  'Content-Type: application/json' \
+      -d '{ \"choice\": \"flow\" }'"
   ```
 
 ## Cleanup
