@@ -1,18 +1,18 @@
 # NANOG-86 Hackathon Open Traffic Generator Lab
 
-## Topology diagram
+## OTG Containerlab topology 
+
+New Containerlab topology file [`nanog_clab_otg_202210.yml`](nanog_clab_otg_202210.yml) has `ixia-c` traffic generator node replacing both `host1` and `host2` nodes from the [original NANOG-86 hackathon setup](nanog_clab_graphite_20221007_2.yaml).
+
+With `ixia-c` nodes added, it becomes possible to introduce emulated network devices and traffic endpoints behind `ixia-c` ports. Such emulation brings more realism to the setup and allows to perform validation of the lab configuration.
+
+For examples, we can add an emulated router with a /24 network behind each `ixia-c` port. A diagram of such configuration is shown below. To define such emulated network elements, a provided [`otg.yml`](otg.yml) configuration file is used. This file uses [Open Traffic Generator](https://otg.dev) specification.
 
 ![Diagram](images/n86-otg.png)
 
 ## Deploy a topology
 
-1. Option with Ixia-c replacing `host1` and `host2` as is
-
-  ```Shell
-  sudo -E clab dep -t nanog_clab_otg_202210.yml
-  ```
-
-2. Option with Ixia-c replacing `host1` and `host2` with emulated routers (static routing setup)
+1. Option with Ixia-c replacing `host1` and `host2` with emulated routers (static routing setup)
 
   ```Shell
   sudo -E clab dep -t nanog_clab_otg_static_202210.yml
