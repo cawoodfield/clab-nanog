@@ -26,7 +26,18 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
     sudo mv otgen /usr/local/bin/otgen
     sudo chmod +x /usr/local/bin/otgen
     ```
-2. Clone this reposotory to `/opt` as:
+
+### If using AWS EC2 instance provided for NANOG Hackathon
+
+1. Download the topology file:
+
+  ```Shell
+  curl https://raw.githubusercontent.com/bortok/clab-nanog/main/nanog_clab_otg_202210.yml -o /opt/clab/nanog_clab_otg_202210.yml
+  ````
+
+### If using an empty Linux host
+
+1. Clone this reposotory to `/opt` as:
 
 ```Shell
 sudo git clone https://github.com/bortok/clab-nanog.git /opt/clab
