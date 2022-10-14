@@ -69,9 +69,9 @@ topology:
         - __clabDir__/topology-data.json:/htdocs/lab/default/topology-data.json:ro
         - __clabDir__/ansible-inventory.yml:/htdocs/lab/default/ansible-inventory.yml:ro
       ports:
-        - 8080:80
+        - 8081:80
       exec:
-        - sh -c 'graphite_motd.sh 8080'
+        - sh -c 'graphite_motd.sh 8081'
       labels:
         graph-hide: yes
 

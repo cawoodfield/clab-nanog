@@ -59,7 +59,7 @@ sudo git clone https://github.com/bortok/clab-nanog.git /opt/clab
 2. Pull MAC addresses from the running topology. Here, to we're using an API call to the `graphite` container to collect live node data information, including MAC addresses, from the running nodes.
 
   ```Shell
-  curl -s http://localhost:8080/collect/clab/nanog86_otg/nodes/ > node-data.json
+  curl -s http://localhost:8081/collect/clab/nanog86_otg/nodes/ > node-data.json
   DMAC1=`cat node-data.json | jq -r '.nodes[] | select(.hostname=="crpd1") | .interfaces["eth3"].mac_address'`
   DMAC2=`cat node-data.json | jq -r '.nodes[] | select(.hostname=="ceos2") | .interfaces["Ethernet3"].mac_address'`
   echo $DMAC1 $DMAC2
