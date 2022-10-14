@@ -6,7 +6,7 @@
 * `git` - how to install depends on your Linux distro
 * [Docker](https://docs.docker.com/engine/install/)
 * [Containerlab](https://containerlab.dev/install/)
-* [otgen](https://github.com/open-traffic-generator/otgen) version 0.3.0 or later
+* [otgen](https://otg.dev/clients/otgen/) version 0.3.0 or later
 
     ```Shell
     curl -L "https://github.com/open-traffic-generator/otgen/releases/download/v0.3.0/otgen_0.3.0_$(uname -s)_$(uname -m).tar.gz" | tar xzv otgen
@@ -42,7 +42,7 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
   ```
 ## Create OTG configuration
 
-1. Initialize test parameters via ENV variable
+1. Initialize test parameters via ENV variables
 
   ```Shell
   OTG_API="https://clab-nanog86_otg-ixiac"
@@ -69,6 +69,8 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
   > otg.yml
   ```
 3. Take a look at the content of `otg.yml` you just created. Use [OTG Specification](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/open-traffic-generator/models/master/artifacts/openapi.yaml&nocors) as a reference.
+
+  Note, although we used `otgen` tool to create a file, this could be done in a variety of different ways. See more [here](https://otg.dev/clients/).
 
 ## Run OTG testing
 
