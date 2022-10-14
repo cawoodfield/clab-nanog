@@ -72,7 +72,7 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
 
 ## Run OTG testing
 
-1. Run traffic test between emulated devices using test IPs
+1. Run traffic test between emulated devices using test IPs.
 
   ```Shell
   cat otg.yml | \
@@ -82,7 +82,38 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
   otgen display --mode table
   ```
 
-TODO note this would fail w/o adding static routes. Add those and then the test passes
+2. Add static routes to test subnets to `cprd1` and `ceos2` routers as `ixia-c` test ports are connected to them. Redistribute static routes into BGP for remaining routers to learn them.
+
+  ```Shell
+  sudo docker exec -it clab-nanog86_otg-crpd1 cli
+  configure
+  set routing-options static route 198.51.100.0/24 next-hop 10.100.0.2
+  set policy-options policy-statement BGP_OUT term REDIST from protocol static
+  commit
+  exit
+  exit
+  ```
+
+  ```Shell
+  sudo docker exec -it clab-nanog86_otg-ceos2 Cli
+  enable
+  configure terminal
+  ip route 192.0.2.0/24 10.100.1.2
+  router bgp 65003
+    redistribute static
+    exit
+  exit
+  ```
+
+3. Run traffic test again
+
+  ```Shell
+  cat otg.yml | \
+  otgen run --insecure --api $OTG_API \
+            --metrics flow | \
+  otgen transform --metrics flow |
+  otgen display --mode table
+  ```
 
 ## Cleanup
 
