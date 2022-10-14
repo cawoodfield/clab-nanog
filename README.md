@@ -52,6 +52,7 @@ sudo git clone https://github.com/bortok/clab-nanog.git /opt/clab
 1. Use Containerlab to launch the topology
 
   ```Shell
+  cd /opt/clab
   sudo -E clab dep -t nanog_clab_otg_202210.yml
   ```
 
