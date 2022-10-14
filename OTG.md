@@ -6,7 +6,7 @@ The lab uses Containerlab topology file [`nanog_clab_otg_202210.yml`](nanog_clab
 
 With `ixia-c` node added, it becomes possible to introduce emulated network devices and traffic endpoints behind `ixia-c` ports. Such emulation brings more realism to the setup and allows to perform validation of the lab configuration.
 
-For example, we can add an emulated router with a /24 network behind each `ixia-c` port. A diagram of such configuration is shown below. To define such emulated network elements with `ixia-c`, [`otg.yml`](otg.yml) configuration file has to be applied to it. The file follows [Open Traffic Generator](https://otg.dev) specification.
+For example, we can add an emulated router with a /24 network behind each `ixia-c` port. A diagram of this configuration is shown below. To define such emulated network elements with `ixia-c`, a configuration file [`otg.yml`](otg.yml) has to be applied to it. The file has to follow [Open Traffic Generator](https://otg.dev) specification.
 
 ![Diagram](images/n86-otg.png)
 
