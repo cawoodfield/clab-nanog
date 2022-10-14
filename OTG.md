@@ -1,5 +1,19 @@
 # NANOG-86 Hackathon Open Traffic Generator Lab
 
+## Prerequisites
+
+* Linux host or VM with sudo permissions and Docker support
+* `git` - how to install depends on your Linux distro
+* [Docker](https://docs.docker.com/engine/install/)
+* [Containerlab](https://containerlab.dev/install/)
+* [otgen](https://github.com/open-traffic-generator/otgen) version 0.3.0 or later
+
+    ```Shell
+    curl -L "https://github.com/open-traffic-generator/otgen/releases/download/v0.3.0/otgen_0.3.0_$(uname -s)_$(uname -m).tar.gz" | tar xzv otgen
+    sudo mv otgen /usr/local/bin/otgen
+    sudo chmod +x /usr/local/bin/otgen
+    ```
+
 ## OTG Containerlab topology 
 
 The lab uses Containerlab topology file [`nanog_clab_otg_202210.yml`](nanog_clab_otg_202210.yml) with `ixia-c` traffic generator node. This node has replaced `host1` and `host2` from the [original NANOG-86 hackathon setup](nanog_clab_graphite_20221007_2.yaml).
@@ -10,23 +24,27 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
 
 ![Diagram](images/n86-otg.png)
 
-## Deploy a topology
+## Deploy
 
-1. Option with Ixia-c replacing `host1` and `host2` with emulated routers (static routing setup)
+1. Use Containerlab to launch the topology
 
   ```Shell
-  sudo -E clab dep -t nanog_clab_otg_static_202210.yml
+  sudo -E clab dep -t nanog_clab_otg_202210.yml
   ```
 
-3. Pull MAC addresses from the topology and initialize test parameters
+2. Pull MAC addresses from the running topology. Here, to we're using an API call to the `graphite` container to collect live node data information, including MAC addresses, from the running nodes.
 
   ```Shell
   curl -s http://localhost:8080/collect/clab/nanog86_otg/nodes/ > node-data.json
   DMAC1=`cat node-data.json | jq -r '.nodes[] | select(.hostname=="crpd1") | .interfaces["eth3"].mac_address'`
   DMAC2=`cat node-data.json | jq -r '.nodes[] | select(.hostname=="ceos2") | .interfaces["Ethernet3"].mac_address'`
   echo $DMAC1 $DMAC2
-  rm node-data.json
+  ```
+## Create OTG configuration
 
+1. Initialize test parameters via ENV variable
+
+  ```Shell
   OTG_API="https://clab-nanog86_otg-ixiac"
   HOST1=10.100.0.2
   HOST2=10.100.1.2
@@ -37,8 +55,22 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
   TESTIP2=192.0.2.1
   ```
 
-## Run OTG testing
+2. Use `otgen` tool to generate `otg.yml` file with the test parameters defined above:
 
+  ```Shell
+  otgen create device --name otg1 --ip $HOST1 --gw $GW1 --port p1 --location eth1 | \
+  otgen add device    --name otg2 --ip $HOST2 --gw $GW2 --port p2 --location eth2 | \
+  otgen add flow --name f1 --dmac $DMAC1 \
+                    --src $TESTIP1 --dst $TESTIP2 \
+                    --tx otg1 --rx otg2 | \
+  otgen add flow --name f2 --dmac $DMAC2 \
+                    --src $TESTIP2 --dst $TESTIP1 \
+                    --tx otg2 --rx otg1 \
+  > otg.yml
+  ```
+3. Take a look at the content of `otg.yml` you just created. Use [OTG Specification](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/open-traffic-generator/models/master/artifacts/openapi.yaml&nocors) as a reference.
+
+## Run OTG testing
 
 1. Run raw traffic test between `host1` and `host2` IPs - this should work for both topology options
 

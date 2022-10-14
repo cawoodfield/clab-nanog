@@ -153,3 +153,5 @@ cython_debug/
 *.bak
 clab-*
 *.lic
+otg.yml
+node-data.json
