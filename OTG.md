@@ -2,7 +2,7 @@
 
 ## Topology diagram
 
-[!Diagram](images/n86-otg.png)
+![Diagram](images/n86-otg.png)
 
 ## Deploy a topology
 
