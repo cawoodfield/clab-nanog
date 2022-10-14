@@ -77,8 +77,7 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
   ```Shell
   cat otg.yml | \
   otgen run --insecure --api $OTG_API \
-            --metrics flow \
-            2>/dev/null |
+            --metrics flow | \
   otgen transform --metrics flow |
   otgen display --mode table
   ```
