@@ -18,7 +18,12 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
   * `git` - how to install depends on your Linux distro
   * [`yq`](https://github.com/mikefarah/yq/#install)
   * [Docker](https://docs.docker.com/engine/install/)
-  * [Containerlab](https://containerlab.dev/install/)
+  * [Containerlab](https://containerlab.dev/install/). If already installed, upgrade to the latest version
+  
+    ```Shell
+    sudo clab version upgrade
+    ```
+  
   * [otgen](https://otg.dev/clients/otgen/) version 0.3.0 or later
 
     ```Shell
@@ -39,11 +44,16 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
 
 1. Clone this repository:
 
-```Shell
-git clone https://github.com/bortok/clab-nanog.git
-```
+  ```Shell
+  git clone https://github.com/bortok/clab-nanog.git
+  CLABDIR=`pwd`/clab-nanog
+  ```
 
-2. Add cRPD license file to `./clab-nanog/files/junos_sfnt.lic`
+2. Add cRPD license file to `./clab-nanog/files/junos_sfnt.lic`. For AWS EC2 instance provided for NANOG Hackathon, use
+
+  ```Shell
+  ln -s /opt/clab/files/junos_sfnt.lic ${CLABDIR}/files/junos_sfnt.lic
+  ```
 
 3. If not already present, pull Docker images for Arista cEOSLab and Juniper cRPD and tag them as `ceos:latest` and `crpd:latest` respectively
 
@@ -52,7 +62,7 @@ git clone https://github.com/bortok/clab-nanog.git
 1. Use Containerlab to launch the topology
 
   ```Shell
-  cd /opt/clab
+  cd ${CLABDIR}
   sudo -E clab dep -t nanog_clab_otg_202210.yml
   ```
 

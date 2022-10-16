@@ -1,7 +1,7 @@
 name: nanog86_otg
 
 mgmt:
-  network: mgmt
+  network: mgmt_otg
   ipv4_subnet: 172.22.1.0/24
 
 topology:
