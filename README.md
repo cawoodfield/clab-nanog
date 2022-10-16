@@ -40,10 +40,10 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
 1. Clone this reposotory to `/opt` as:
 
 ```Shell
-sudo git clone https://github.com/bortok/clab-nanog.git /opt/clab
+git clone https://github.com/bortok/clab-nanog.git
 ```
 
-2. Add cRPD license file to `/opt/clab/files/junos_sfnt.lic`
+2. Add cRPD license file to `./clab-nanog/files/junos_sfnt.lic`
 
 3. If not already present, pull Docker images for Arista cEOSLab and Juniper cRPD and tag them as `ceos:latest` and `crpd:latest` respectively
 
