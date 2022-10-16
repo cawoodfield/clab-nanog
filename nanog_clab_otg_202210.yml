@@ -1,8 +1,8 @@
 name: nanog86_otg
 
 mgmt:
-  network: mgmt
-  ipv4_subnet: 172.22.0.0/24
+  network: mgmt_otg
+  ipv4_subnet: 172.22.1.0/24
 
 topology:
   kinds:
@@ -14,36 +14,44 @@ topology:
   nodes:
     ceos1:
       kind: ceos
-      startup-config: /opt/clab/files/ceos1.cfg
-      mgmt_ipv4: 172.22.0.2
+      startup-config: ./files/ceos1.cfg
+      mgmt_ipv4: 172.22.1.2
       labels:
         graph-level: 2
 
     ceos2:
       kind: ceos
-      startup-config: /opt/clab/files/ceos2.cfg
-      mgmt_ipv4: 172.22.0.3
+      startup-config: ./files/ceos2.cfg
+      mgmt_ipv4: 172.22.1.3
       labels:
         graph-level: 3
 
     crpd1:
       kind: crpd
-      startup-config: /opt/clab/files/crpd1.cfg
-      mgmt_ipv4: 172.22.0.4
+      startup-config: ./files/crpd1.cfg
+      binds:
+        - ./files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
+      exec:
+        - cli -c "request system license add /tmp/junos_sfnt.lic"
+      mgmt_ipv4: 172.22.1.4
       labels:
         graph-level: 2
 
     crpd2:
       kind: crpd
-      startup-config: /opt/clab/files/crpd2.cfg
-      mgmt_ipv4: 172.22.0.5
+      startup-config: ./files/crpd2.cfg
+      binds:
+        - ./files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
+      exec:
+        - cli -c "request system license add /tmp/junos_sfnt.lic"
+      mgmt_ipv4: 172.22.1.5
       labels:
         graph-level: 3
 
     ixiac:
       kind: keysight_ixia-c-one
       image: ghcr.io/open-traffic-generator/ixia-c-one:0.0.1-3423
-      mgmt_ipv4: 172.22.0.10
+      mgmt_ipv4: 172.22.1.10
       exec:
         - "./ifcfg add eth1 10.100.0.2 24"
         - "./ifcfg add eth2 10.100.1.2 24"
@@ -54,7 +62,7 @@ topology:
     graphite:
       kind: linux
       image: netreplica/graphite:nanog86
-      mgmt_ipv4: 172.22.0.100
+      mgmt_ipv4: 172.22.1.100
       env:
         CLAB_SSH_CONNECTION: ${SSH_CONNECTION}
       binds:

@@ -15,10 +15,16 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
 1. Binaries needed
 
   * Linux host or VM with sudo permissions and Docker support
-  * `git` - how to install depends on your Linux distro
-  * [`yq`](https://github.com/mikefarah/yq/#install)
-  * [Docker](https://docs.docker.com/engine/install/)
-  * [Containerlab](https://containerlab.dev/install/)
+  * `git` - how to install depends on your Linux distro. NANOG Hackathon EC2 instance already has `git`
+  * `jq`  - how to install depends on your Linux distro. For NANOG Hackathon EC2 instance: `sudo apt install jq -y`
+  * [`yq`](https://github.com/mikefarah/yq/#install). For NANOG Hackathon EC2 instance: `sudo snap install yq`
+  * [Docker](https://docs.docker.com/engine/install/). NANOG Hackathon EC2 instance already has Docker
+  * [Containerlab](https://containerlab.dev/install/). If already installed, upgrade to the latest version
+  
+    ```Shell
+    sudo clab version upgrade
+    ```
+  
   * [otgen](https://otg.dev/clients/otgen/) version 0.3.0 or later
 
     ```Shell
@@ -27,32 +33,27 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
     sudo chmod +x /usr/local/bin/otgen
     ```
 
-### If using AWS EC2 instance provided for NANOG Hackathon
-
-1. Download the topology file:
+2. Clone this repository:
 
   ```Shell
-  curl https://raw.githubusercontent.com/bortok/clab-nanog/main/nanog_clab_otg_202210.yml -o /opt/clab/nanog_clab_otg_202210.yml
-  ````
+  git clone https://github.com/bortok/clab-nanog.git
+  CLABDIR=`pwd`/clab-nanog
+  ```
 
-### If using an empty Linux host
+3. Add cRPD license file to `./clab-nanog/files/junos_sfnt.lic`. For AWS EC2 instance provided for NANOG Hackathon, use
 
-1. Clone this reposotory to `/opt` as:
+  ```Shell
+  ln -s /opt/clab/files/junos_sfnt.lic ${CLABDIR}/files/junos_sfnt.lic
+  ```
 
-```Shell
-sudo git clone https://github.com/bortok/clab-nanog.git /opt/clab
-```
-
-2. Add cRPD license file to `/opt/clab/files/junos_sfnt.lic`
-
-3. If not already present, pull Docker images for Arista cEOSLab and Juniper cRPD and tag them as `ceos:latest` and `crpd:latest` respectively
+4. If not already present, pull Docker images for Arista cEOSLab and Juniper cRPD and tag them as `ceos:latest` and `crpd:latest` respectively. NANOG Hackathon EC2 instance already has these images.
 
 ## Deploy
 
 1. Use Containerlab to launch the topology
 
   ```Shell
-  cd /opt/clab
+  cd ${CLABDIR}
   sudo -E clab dep -t nanog_clab_otg_202210.yml
   ```
 
@@ -96,7 +97,7 @@ sudo git clone https://github.com/bortok/clab-nanog.git /opt/clab
 
 ## Run OTG testing
 
-1. Run traffic test between emulated devices using test IPs.
+1. Run traffic test between emulated devices using test IPs. THIS TEST IS EXPECTED TO FAIL - you shall not see any RX counters increasing. The reason is the initial configuration of the lab doesn't include static routes to the `TESTIP1` and `TESTIP2`.
 
   ```Shell
   cat otg.yml | \
@@ -106,7 +107,7 @@ sudo git clone https://github.com/bortok/clab-nanog.git /opt/clab
   otgen display --mode table
   ```
 
-2. Add static routes to test subnets to `cprd1` and `ceos2` routers as `ixia-c` test ports are connected to them. Redistribute static routes into BGP for remaining routers to learn them.
+2. Add static routes to test subnets to `cprd1` and `ceos2` routers as `ixia-c` test ports are connected to them. Redistribute static routes into BGP for remaining routers to learn them. Note, for `ceos2`, you need to launch a CLI terminal session first, wait for the prompt, and only then paste the configuration commands.
 
   ```Shell
   sudo docker exec -it clab-nanog86_otg-crpd1 cli
@@ -120,12 +121,16 @@ sudo git clone https://github.com/bortok/clab-nanog.git /opt/clab
 
   ```Shell
   sudo docker exec -it clab-nanog86_otg-ceos2 Cli
+  ```
+
+  ```Shell
   enable
   configure terminal
   ip route 192.0.2.0/24 10.100.1.2
   router bgp 65003
     redistribute static
     exit
+  exit
   exit
   ```
 
@@ -160,6 +165,7 @@ sudo git clone https://github.com/bortok/clab-nanog.git /opt/clab
       -X POST \
       -H  'Content-Type: application/json' \
       -d '{ \"choice\": \"flow\" }'"
+    
   ```
 
 ## Cleanup
