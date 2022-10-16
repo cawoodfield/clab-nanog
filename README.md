@@ -33,30 +33,20 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
     sudo chmod +x /usr/local/bin/otgen
     ```
 
-### If using AWS EC2 instance provided for NANOG Hackathon
-
-1. Download the topology file:
-
-  ```Shell
-  curl https://raw.githubusercontent.com/bortok/clab-nanog/main/nanog_clab_otg_202210.yml -o /opt/clab/nanog_clab_otg_202210.yml
-  ````
-
-### If using an empty Linux host
-
-1. Clone this repository:
+2. Clone this repository:
 
   ```Shell
   git clone https://github.com/bortok/clab-nanog.git
   CLABDIR=`pwd`/clab-nanog
   ```
 
-2. Add cRPD license file to `./clab-nanog/files/junos_sfnt.lic`. For AWS EC2 instance provided for NANOG Hackathon, use
+3. Add cRPD license file to `./clab-nanog/files/junos_sfnt.lic`. For AWS EC2 instance provided for NANOG Hackathon, use
 
   ```Shell
   ln -s /opt/clab/files/junos_sfnt.lic ${CLABDIR}/files/junos_sfnt.lic
   ```
 
-3. If not already present, pull Docker images for Arista cEOSLab and Juniper cRPD and tag them as `ceos:latest` and `crpd:latest` respectively
+4. If not already present, pull Docker images for Arista cEOSLab and Juniper cRPD and tag them as `ceos:latest` and `crpd:latest` respectively
 
 ## Deploy
 

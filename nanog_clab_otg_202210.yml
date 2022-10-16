@@ -14,28 +14,36 @@ topology:
   nodes:
     ceos1:
       kind: ceos
-      startup-config: /opt/clab/files/ceos1.cfg
+      startup-config: ./files/ceos1.cfg
       mgmt_ipv4: 172.22.1.2
       labels:
         graph-level: 2
 
     ceos2:
       kind: ceos
-      startup-config: /opt/clab/files/ceos2.cfg
+      startup-config: ./files/ceos2.cfg
       mgmt_ipv4: 172.22.1.3
       labels:
         graph-level: 3
 
     crpd1:
       kind: crpd
-      startup-config: /opt/clab/files/crpd1.cfg
+      startup-config: ./files/crpd1.cfg
+      binds:
+        - ./files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
+      exec:
+        - cli -c "request system license add /tmp/junos_sfnt.lic"
       mgmt_ipv4: 172.22.1.4
       labels:
         graph-level: 2
 
     crpd2:
       kind: crpd
-      startup-config: /opt/clab/files/crpd2.cfg
+      startup-config: ./files/crpd2.cfg
+      binds:
+        - ./files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
+      exec:
+        - cli -c "request system license add /tmp/junos_sfnt.lic"
       mgmt_ipv4: 172.22.1.5
       labels:
         graph-level: 3
