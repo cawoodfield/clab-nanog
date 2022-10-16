@@ -30,7 +30,7 @@ topology:
       kind: crpd
       startup-config: ./files/crpd1.cfg
       binds:
-        - /opt/clab/files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
+        - ./files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
       exec:
         - cli -c "request system license add /tmp/junos_sfnt.lic"
       mgmt_ipv4: 172.22.1.4
@@ -41,7 +41,7 @@ topology:
       kind: crpd
       startup-config: ./files/crpd2.cfg
       binds:
-        - /opt/clab/files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
+        - ./files/junos_sfnt.lic:/tmp/junos_sfnt.lic:ro
       exec:
         - cli -c "request system license add /tmp/junos_sfnt.lic"
       mgmt_ipv4: 172.22.1.5
