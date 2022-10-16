@@ -37,7 +37,7 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
 
 ### If using an empty Linux host
 
-1. Clone this reposotory to `/opt` as:
+1. Clone this repository:
 
 ```Shell
 git clone https://github.com/bortok/clab-nanog.git
