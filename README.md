@@ -117,7 +117,7 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
   otgen display --mode table
   ```
 
-2. Add static routes to test subnets to `cprd1` and `ceos2` routers as `ixia-c` test ports are connected to them. Redistribute static routes into BGP for remaining routers to learn them.
+2. Add static routes to test subnets to `cprd1` and `ceos2` routers as `ixia-c` test ports are connected to them. Redistribute static routes into BGP for remaining routers to learn them. Note, for `ceos2`, you need to launch a CLI terminal session first, wait for the prompt, and only then paste the configuration commands.
 
   ```Shell
   sudo docker exec -it clab-nanog86_otg-crpd1 cli
@@ -131,6 +131,9 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
 
   ```Shell
   sudo docker exec -it clab-nanog86_otg-ceos2 Cli
+  ```
+
+  ```Shell
   enable
   configure terminal
   ip route 192.0.2.0/24 10.100.1.2
