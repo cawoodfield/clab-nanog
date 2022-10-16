@@ -15,10 +15,10 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
 1. Binaries needed
 
   * Linux host or VM with sudo permissions and Docker support
-  * `git` - how to install depends on your Linux distro
-  * `jq`  - how to install depends on your Linux distro
-  * [`yq`](https://github.com/mikefarah/yq/#install)
-  * [Docker](https://docs.docker.com/engine/install/)
+  * `git` - how to install depends on your Linux distro. NANOG Hackathon EC2 instance already has `git`
+  * `jq`  - how to install depends on your Linux distro. For NANOG Hackathon EC2 instance: `sudo apt install jq -y`
+  * [`yq`](https://github.com/mikefarah/yq/#install). For NANOG Hackathon EC2 instance: `sudo snap install yq`
+  * [Docker](https://docs.docker.com/engine/install/). NANOG Hackathon EC2 instance already has Docker
   * [Containerlab](https://containerlab.dev/install/). If already installed, upgrade to the latest version
   
     ```Shell
@@ -46,7 +46,7 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
   ln -s /opt/clab/files/junos_sfnt.lic ${CLABDIR}/files/junos_sfnt.lic
   ```
 
-4. If not already present, pull Docker images for Arista cEOSLab and Juniper cRPD and tag them as `ceos:latest` and `crpd:latest` respectively
+4. If not already present, pull Docker images for Arista cEOSLab and Juniper cRPD and tag them as `ceos:latest` and `crpd:latest` respectively. NANOG Hackathon EC2 instance already has these images.
 
 ## Deploy
 
