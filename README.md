@@ -16,6 +16,7 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
 
   * Linux host or VM with sudo permissions and Docker support
   * `git` - how to install depends on your Linux distro
+  * `jq`  - how to install depends on your Linux distro
   * [`yq`](https://github.com/mikefarah/yq/#install)
   * [Docker](https://docs.docker.com/engine/install/)
   * [Containerlab](https://containerlab.dev/install/). If already installed, upgrade to the latest version
@@ -106,7 +107,7 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
 
 ## Run OTG testing
 
-1. Run traffic test between emulated devices using test IPs.
+1. Run traffic test between emulated devices using test IPs. THIS TEST IS EXPECTED TO FAIL - you shall not see any RX counters increasing. The reason is the initial configuration of the lab doesn't include static routes to the `TESTIP1` and `TESTIP2`.
 
   ```Shell
   cat otg.yml | \
@@ -136,6 +137,7 @@ For example, we can add an emulated router with a /24 network behind each `ixia-
   router bgp 65003
     redistribute static
     exit
+  exit
   exit
   ```
 
